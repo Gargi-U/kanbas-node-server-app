@@ -10,6 +10,6 @@ app.use(cors());
 app.use(express.json()); 
 ModuleRoutes(app);
 CourseRoutes(app);
-Hello(app);
 Lab5(app);
+Hello(app);
 app.listen(4000);
