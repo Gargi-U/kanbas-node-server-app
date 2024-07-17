@@ -1,17 +1,36 @@
 import db from "../Database/index.js";
 export default function ModuleRoutes(app) {
     
-    app.delete("/api/modules/:mid", (req, res) => {
+    //update the module
+    
+    app.put("/api/modules/:mid", (req, res) => {
         const { mid } = req.params;
-        const index = db.modules.findIndex((m) => m._id === mid);
-        if (index === -1) {
+        const course = db.modules.find((m) => m.modules.find((m) => m._id === mid));
+        if (!course) {
           res.status(404).send("Module not found");
           return;
         }
-        db.modules.splice(index, 1);
-        res.status(204).send();
+        const module = course.modules.find((m) => m._id === mid);
+        if (!module) {
+          res.status(404).send("Module not found");
+          return;
+        }
+        Object.assign(module, req.body);
+        res.json(module);
       });
-        
+
+    app.delete("/api/modules/:mid", (req, res) => {
+        const { mid } = req.params;
+        const course = db.modules.find((m) => m.modules.find((m) => m._id === mid));
+        if (!course) {
+          res.status(404).send("Module not found");
+          return;
+        }
+        course.modules = course.modules.filter((m) => m._id !== mid);
+        res.status(204).send();
+      } 
+    );
+    
     
     app.post("/api/courses/:cid/modules", (req, res) => {
         const { cid } = req.params;
