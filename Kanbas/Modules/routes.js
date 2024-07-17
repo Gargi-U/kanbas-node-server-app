@@ -1,8 +1,6 @@
 import db from "../Database/index.js";
 export default function ModuleRoutes(app) {
-    
-    //update the module
-    
+
     app.put("/api/modules/:mid", (req, res) => {
         const { mid } = req.params;
         const course = db.modules.find((m) => m.modules.find((m) => m._id === mid));
